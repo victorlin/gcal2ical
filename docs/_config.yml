@@ -1,0 +1,4 @@
+title: gCal 2 iCal
+description: A simple site to generate Google Calendar iCal (.ics) links for public calendars.
+analytics: UA-109654720-1
+baseurl: /gcal2ical

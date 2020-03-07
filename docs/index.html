@@ -1,0 +1,87 @@
+---
+layout: default
+---
+
+<div id="title">
+  <h1>{{site.title}}</h1>
+  <p>{{site.description}}</p>
+</div>
+<div id="conversion-box">
+  <label for="gcal-embed-link">Paste Public URL link:</label>
+  <br>
+  <input type="text" id="gcal-embed-link" name="gcal-embed-link"
+    oninput="generateLink()"
+    onpaste="generateLink()"
+    onchange="generateLink()"
+    onkeypress="generateLink()">
+  <br>
+  <span id="input-error"></span>
+  <br>
+  <label for="ical-link">iCal link:</label>
+  <br>
+  <input type="text" id="ical-link" name="ical-link" readonly><br><br>
+</div>
+
+<script>
+
+function generateLink() {
+    var embedLink = decodeURIComponent(document.getElementById("gcal-embed-link").value);
+    if (embedLink == "") {
+        clearAll();
+        return;
+    }
+
+    var regex = new RegExp("=(.*\\@[\\w\\.]+)");
+    var match = regex.exec(embedLink);
+    if (!match) {
+        document.getElementById("input-error").textContent = "Invalid URL.";
+        iCalLink = "";
+    }
+    else {
+        clearAll();
+        var calId = encodeURIComponent(match[1]);
+        var iCalLink = `https://calendar.google.com/calendar/ical/${calId}/public/basic.ics`;
+    }
+    document.getElementById("ical-link").value = iCalLink;
+}
+
+function clearAll() {
+    document.getElementById("input-error").textContent = "";
+    document.getElementById("ical-link").value = "";
+}
+
+</script>
+
+<style type="text/css">
+
+body {
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  font-size: 1.5em;
+}
+
+input {
+    width: 300px;
+    font-size: 1em;
+}
+
+#input-error {
+    color: red;
+}
+
+#title {
+  text-align: center;
+}
+
+.wrapper {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column
+}
+
+#conversion-box {
+    box-sizing: border-box;
+}
+
+</style>
